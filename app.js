@@ -2,6 +2,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.set('view engine', 'handlebars');
 
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
+app.use(methodOverride('_method'));
 
 app.get('/', (req, res) => {
   const title = 'Welcome'
@@ -43,8 +45,20 @@ app.get('/ideas/add', (req, res) => {
   res.render('ideas/add');
 })
 
+app.get('/ideas/edit/:id', (req, res) => {
+  Idea.findOne({
+    _id: req.params.id
+  })
+  .then(idea => {
+    res.render('ideas/edit', {
+      idea: idea
+    });
+  })
+})
+
 app.post('/ideas', (req, res) => {
   let errors = [];
+
   if(!req.body.title){
     errors.push({text: 'please add a title'});
   }
@@ -68,6 +82,21 @@ app.post('/ideas', (req, res) => {
         res.redirect('/ideas')
       })
   }
+})
+
+app.put('/ideas/:id', (req, res) => {
+  Idea.findOne({
+    _id: req.params.id
+  })
+  .then(idea => {
+    idea.title = req.body.title;
+    idea.details = req.body.details;
+
+    idea.save()
+    .then(idea => {
+      res.redirect('/ideas')
+    })
+  })
 })
 
 const port = 5000;
