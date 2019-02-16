@@ -11,8 +11,6 @@ mongoose.connect('mongodb://localhost/vidjot-dev', { useNewUrlParser: true })
 require('./models/Idea');
 const Idea = mongoose.model('ideas');
 
-const port = 5000;
-
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
@@ -26,6 +24,12 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
   res.render('about');
 });
+
+app.get('/ideas/add', (req, res) => {
+  res.render('ideas/add')
+})
+
+const port = 5000;
 
 app.listen(port, () =>{
   console.log(`Server started on ${port}`);
