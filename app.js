@@ -7,7 +7,6 @@ const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
 
-
 const app = express();
 
 mongoose.connect('mongodb://localhost/vidjot-dev', { useNewUrlParser: true })
