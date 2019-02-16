@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
+const passport = require('passport');
 
 const app = express();
 
@@ -29,14 +30,20 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }))
+
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(flash())
+
+//Global Variable
 app.use(function(req, res, next){
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
+  res.locals.user = req.user || null;
   next()
 })
-
 
 app.get('/', (req, res) => {
   const title = 'Welcome'
@@ -56,6 +63,8 @@ const users = require('./routes/users');
 
 app.use('/ideas', ideas)
 app.use('/users', users)
+
+require('./config/passport')(passport)
 
 const port = 5000;
 
