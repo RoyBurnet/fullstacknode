@@ -6,7 +6,10 @@ const app = express();
 
 mongoose.connect('mongodb://localhost/vidjot-dev', { useNewUrlParser: true })
 .then(() => console.log('MongoDB Connected'))
-.catch(err => console.log(err))
+.catch(err => console.log(err));
+
+require('./models/Idea');
+const Idea = mongoose.model('ideas');
 
 const port = 5000;
 
