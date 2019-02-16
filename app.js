@@ -1,16 +1,15 @@
 const express = require('express');
+const exphbs = require('express-handlebars');
 
 const app = express();
 
 const port = 5000;
 
-app.use(function(req, res, next){
-  req.name = 'Doti Fresh';
-  next();
-});
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 app.get('/', (req, res) => {
-  res.send(req.name);
+  res.render('home', {name: 'Fes'})
 });
 
 app.get('/about', (req, res) => {
