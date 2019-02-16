@@ -9,11 +9,14 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.get('/', (req, res) => {
-  res.render('home', {name: 'Fes'})
+  const title = 'Welcome'
+  res.render('index', {
+    title: title
+  })
 });
 
 app.get('/about', (req, res) => {
-  res.send('ABOUT');
+  res.render('about');
 });
 
 app.listen(port, () =>{
