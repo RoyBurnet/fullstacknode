@@ -56,7 +56,6 @@ app.get('/about', (req, res) => {
   res.render('about');
 });
 
-
 // ROUTES
 const ideas = require('./routes/ideas');
 const users = require('./routes/users');
