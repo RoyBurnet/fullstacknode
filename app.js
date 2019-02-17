@@ -10,7 +10,16 @@ const passport = require('passport');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost/vidjot-dev', { useNewUrlParser: true })
+// ROUTES
+const ideas = require('./routes/ideas');
+const users = require('./routes/users');
+
+//passport config
+require('./config/passport')(passport)
+//db config
+const db =  require('./config/database')
+
+mongoose.connect(db.mongoURI, { useNewUrlParser: true })
 .then(() => console.log('MongoDB Connected'))
 .catch(err => console.log(err));
 
@@ -56,16 +65,10 @@ app.get('/about', (req, res) => {
   res.render('about');
 });
 
-// ROUTES
-const ideas = require('./routes/ideas');
-const users = require('./routes/users');
-
 app.use('/ideas', ideas)
 app.use('/users', users)
 
-require('./config/passport')(passport)
-
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () =>{
   console.log(`Server started on ${port}`);
